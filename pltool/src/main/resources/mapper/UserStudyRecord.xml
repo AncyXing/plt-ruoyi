@@ -34,11 +34,11 @@
         select count(*) from user_study_record where user_id = #{userId}
     </select>
 
-    <select id="getStudyRecordOfMonth" resultType="java.lang.Long">
-        select count(*) from user_study_record
+    <select id="getStudyRecordOfMonth" resultType="com.example.pltool.domain.vo.UserStudyRecordOfMonthVo">
+        select date_format(study_time,"%m") as month, count(*) as count from user_study_record
         where study_time >= #{beginStr} and study_time <![CDATA[<=]]> #{endStr}
           and user_id = #{userId}
-        group by date_format(study_time,"%Y%m")
+        group by date_format(study_time,"%m")
     </select>
     <select id="getActualValueOfDay" resultType="java.util.Map">
         select

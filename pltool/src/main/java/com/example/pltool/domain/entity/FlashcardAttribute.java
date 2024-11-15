@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * <p>
  * 闪卡表
@@ -24,6 +26,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("flashcard_attribute")
+@Entity
+@Table(name = "flashcard_attribute")
 public class FlashcardAttribute implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -31,6 +35,8 @@ public class FlashcardAttribute implements Serializable {
   /**
    * id
    */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
@@ -61,12 +67,14 @@ public class FlashcardAttribute implements Serializable {
   /**
    * 创建时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("create_time")
   private LocalDateTime createTime;
 
   /**
    * 更新时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 }

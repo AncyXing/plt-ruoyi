@@ -9,7 +9,7 @@ export default {
       lang: "en-GB",
       rate: 1,
       pitch: 1,
-      voice: 'Google UK English Male',
+      voice: 'Microsoft Hazel - English (United Kingdom)',
       listeners: {
         'onvoiceschanged': (voices) => {
           console.log("Event voiceschanged", voices)
@@ -25,9 +25,9 @@ export default {
   },
   changeVoice(language) {
     if (language === 'en-US') {
-      this.speech.setVoice('Google US English')
+      this.speech.setVoice('Microsoft Zira - English (United States)')
     } else if (language === 'en-GB') {
-      this.speech.setVoice('Google UK English Male')
+      this.speech.setVoice('Microsoft Hazel - English (United Kingdom)')
     }
     this.speech.setLanguage(language)
   },

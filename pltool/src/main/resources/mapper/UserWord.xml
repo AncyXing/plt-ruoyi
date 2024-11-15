@@ -37,13 +37,13 @@
         from user_word
         where user_id = #{userId}
     </select>
-    <select id="getUserWordOfMonth" resultType="java.lang.Long">
-        select count(*)
+    <select id="getUserWordOfMonth" resultType="com.example.pltool.domain.vo.UserWordOfMonthVo">
+        select date_format(create_time, "%m") AS month ,count(*) AS count
         from user_word
         where create_time >= #{beginStr}
           and create_time <![CDATA[<=]]> #{endStr}
           and user_id = #{userId}
-        group by date_format(create_time, "%Y%m")
+        group by date_format(create_time, "%m")
     </select>
     <select id="getUserWordPeriodCount" resultType="com.example.pltool.domain.vo.UserWordPeriodVo">
         select period, count(*) as value

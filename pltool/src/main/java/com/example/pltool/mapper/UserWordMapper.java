@@ -3,6 +3,7 @@ package com.example.pltool.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.example.pltool.domain.vo.UserWordOfMonthVo;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,8 +39,8 @@ public interface UserWordMapper extends BaseMapper<UserWord> {
    * @param endStr 年结束时间
    * @return 每月学习单词数统计
    */
-  List<Long> getUserWordOfMonth(@Param("userId") Long userId, @Param("beginStr") String beginStr,
-      @Param("endStr") String endStr);
+  List<UserWordOfMonthVo> getUserWordOfMonth(@Param("userId") Long userId, @Param("beginStr") String beginStr,
+                                             @Param("endStr") String endStr);
 
   /**
    * 获取单词的阶段数量

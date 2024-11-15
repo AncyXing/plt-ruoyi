@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * <p>
  * 卡包闪卡关系表
@@ -24,6 +26,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("package_card_ref")
+@Entity
+@Table(name = "package_card_ref")
 public class PackageCardRef implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -31,6 +35,8 @@ public class PackageCardRef implements Serializable {
   /**
    * id
    */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
@@ -55,24 +61,28 @@ public class PackageCardRef implements Serializable {
   /**
    * 创建时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("create_time")
   private LocalDateTime createTime;
 
   /**
    * 更新时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 
   /**
    * 单词集uuid
    */
+
   @TableField("collection_uuid")
   private String collectionUuid;
 
   /**
    * 创建人
    */
+
   @TableField("create_user_id")
   private Long createUserId;
 }

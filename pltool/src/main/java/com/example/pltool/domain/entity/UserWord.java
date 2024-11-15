@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * <p>
  * 用户单词表
@@ -26,6 +28,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("user_word")
+@Entity
+@Table(name = "user_word")
 public class UserWord implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -33,6 +37,8 @@ public class UserWord implements Serializable {
   /**
    * 编号
    */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonIgnore
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
@@ -83,6 +89,7 @@ public class UserWord implements Serializable {
   /**
    * 创建时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @TableField("create_time")
   private LocalDateTime createTime;
@@ -90,6 +97,7 @@ public class UserWord implements Serializable {
   /**
    * 更新时间时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 

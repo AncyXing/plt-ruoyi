@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenerationTime;
+
+import javax.annotation.Generated;
+import javax.persistence.*;
 
 /**
  * <p>
@@ -26,10 +30,14 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("word")
+@Entity
+@Table(name = "word")
 public class Word implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonIgnore
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
@@ -73,10 +81,12 @@ public class Word implements Serializable {
   @TableField("sentence")
   private String sentence;
 
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("create_time")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime createTime;
 
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 

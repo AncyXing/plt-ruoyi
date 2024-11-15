@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * <p>
  * 表达记录关系表
@@ -24,6 +26,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("expression_detail_ref")
+@Entity
+@Table(name = "expression_detail_ref")
 public class ExpressionDetailRef implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -31,6 +35,8 @@ public class ExpressionDetailRef implements Serializable {
   /**
    * id
    */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
@@ -55,12 +61,14 @@ public class ExpressionDetailRef implements Serializable {
   /**
    * 创建时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("create_time")
   private LocalDateTime createTime;
 
   /**
    * 更新时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 }

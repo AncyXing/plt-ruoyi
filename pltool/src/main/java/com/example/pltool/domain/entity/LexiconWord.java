@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * <p>
  * 词库与单词关系表
@@ -24,10 +26,13 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("lexicon_word")
+@Entity
+@Table(name = "lexicon_word")
 public class LexiconWord implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
@@ -52,12 +57,14 @@ public class LexiconWord implements Serializable {
   /**
    * 创建时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("create_time")
   private LocalDateTime createTime;
 
   /**
    * 更新时间
    */
+  @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   @TableField("update_time")
   private LocalDateTime updateTime;
 }

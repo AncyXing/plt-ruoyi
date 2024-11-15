@@ -3,6 +3,7 @@ package com.example.pltool.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.example.pltool.domain.vo.UserStudyRecordOfMonthVo;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -46,8 +47,8 @@ public interface UserStudyRecordMapper extends BaseMapper<UserStudyRecord> {
    * @param endStr 年结束时间
    * @return 每月学习单词数统计
    */
-  List<Long> getStudyRecordOfMonth(@Param("userId") Long userId, @Param("beginStr") String beginStr,
-      @Param("endStr") String endStr);
+  List<UserStudyRecordOfMonthVo> getStudyRecordOfMonth(@Param("userId") Long userId, @Param("beginStr") String beginStr,
+                                                       @Param("endStr") String endStr);
 
   /**
    * 每天实际值

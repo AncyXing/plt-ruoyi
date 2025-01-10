@@ -1,7 +1,5 @@
 # 基础镜像
 FROM nginx
-# 挂载目录
-VOLUME /home/plt/front/plt-ui
 # 创建目录
 RUN mkdir -p /home/plt/front/plt-ui
 # 指定路径
@@ -9,4 +7,4 @@ WORKDIR /home/plt/front/plt-ui
 # 复制conf文件到路径
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 # 复制html文件到路径
-COPY ./nginx/dist /home/plt/front/plt-ui
+ADD ./html/dist /home/plt/front/plt-ui

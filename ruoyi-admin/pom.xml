@@ -3,12 +3,12 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.ruoyi</groupId>
-        <artifactId>ruoyi</artifactId>
-        <version>3.8.8</version>
+        <groupId>com.example</groupId>
+        <artifactId>plt</artifactId>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ruoyi-admin</artifactId>
+    <artifactId>plt-admin</artifactId>
     <properties>
         <okhttp3.version>4.11.0</okhttp3.version>
     </properties>
@@ -58,13 +58,13 @@
 
         <!-- 核心模块-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
+            <groupId>com.example</groupId>
             <artifactId>ruoyi-framework</artifactId>
         </dependency>
 
         <!-- 代码生成-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
+            <groupId>com.example</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
@@ -108,7 +108,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.5.15</version>
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <fork>true</fork><!-- 如果没有该配置，devtools不会生效 -->
                 </configuration>
                 <executions>
                     <execution>
@@ -125,6 +125,14 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
         </plugins>

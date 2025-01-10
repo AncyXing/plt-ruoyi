@@ -1,4 +1,4 @@
 # 基础镜像
-FROM mysql:5.7
-# 执行sql脚本
-ADD ./db/*.sql /docker-entrypoint-initdb.d/
+FROM mysql:8.0
+# 执行sql脚本，Docker容器在启动时会自动执行这个目录中的脚本或加载数据文件
+COPY ./db/*.sql /docker-entrypoint-initdb.d/

@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author ruoyi
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class},
-    scanBasePackages = {"com.ruoyi", "com.example.pltool", "com.example.filespringbootstarter"})
+    scanBasePackages = {"com.ruoyi", "com.example.pltool"})
 @MapperScan("com.example.pltool.mapper")
 @EntityScan("com.example.pltool.domain.entity")
 public class PltRuoYiApplication {

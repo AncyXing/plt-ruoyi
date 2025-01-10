@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 CREATE TABLE `sys_dept`
 (
     `dept_id`     bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',

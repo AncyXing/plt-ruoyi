@@ -2,7 +2,7 @@ version : '1.0'
 services:
   plt-mysql:
     container_name: plt-mysql
-    image: mysql:5.7
+    image: mysql:8.0
     build:
       context: ./mysql
     ports:
@@ -19,8 +19,20 @@ services:
       '--default-time-zone=+8:00',
       '--lower-case-table-names=1'
     ]
-    env_file:
-      - .env
+    environment:
+      MYSQL_DATABASE: 'plt'
+      MYSQL_ROOT_PASSWORD: root123
+  plt-redis:
+    container_name: plt-redis
+    image: redis
+    build:
+      context: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/conf/redis.conf:/home/plt/redis/redis.conf
+      - ./redis/data:/data
+    command: redis-server /home/plt/redis/redis.conf
   plt-nginx:
     container_name: plt-nginx
     image: nginx
@@ -29,7 +41,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/dist:/home/plt/front/plt-ui
+#      - ./nginx/dist:/home/plt/front/plt-ui
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/logs:/var/log/nginx
       - ./nginx/conf.d:/etc/nginx/conf.d
@@ -38,11 +50,11 @@ services:
     build:
       context: ./plt-admin
       dockerfile: dockerfile
-    env_file:
-      - .env
     ports:
       - "8080:8080"
     depends_on:
       - plt-mysql
+      - plt-redis
     links:
       - plt-mysql
+      - plt-redis

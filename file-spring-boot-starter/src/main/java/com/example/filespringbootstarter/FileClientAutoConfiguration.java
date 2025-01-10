@@ -1,10 +1,11 @@
-package com.example.filespringbootstarter.config;
+package com.example.filespringbootstarter;
 
+import com.example.filespringbootstarter.config.FileClientConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.filespringbootstarter.config.local.LocalFileClientConfig;
@@ -15,7 +16,7 @@ import com.example.filespringbootstarter.core.service.FileServiceImpl;
 
 @ConditionalOnProperty(value = "file.storage.enable", matchIfMissing = false)
 @Configuration
-@ConfigurationPropertiesScan(basePackages = "com.example.filespringbootstarter.config")
+@ComponentScan
 public class FileClientAutoConfiguration {
 
   @ConditionalOnProperty(value = "file.storage.local.use")

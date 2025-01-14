@@ -2,13 +2,15 @@ package com.example.filespringbootstarter.config.local;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.filespringbootstarter.constant.Constants;
 
-@ConditionalOnBean(name = {"localFileClientConfig"})
+import java.io.File;
+
 @Configuration
 public class LocalResourcesConfig implements WebMvcConfigurer {
 
@@ -21,6 +23,6 @@ public class LocalResourcesConfig implements WebMvcConfigurer {
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
-        .addResourceLocations("file:" + localFileClientConfig.getBasePath() + "/");
+        .addResourceLocations("file:" + localFileClientConfig.getBasePath() + File.separator);
   }
 }

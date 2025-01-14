@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import com.example.filespringbootstarter.config.FileClientConfig;
 
 import lombok.Data;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * 本地文件客户端的配置类
@@ -15,6 +16,7 @@ import lombok.Data;
  * @author author
  */
 @ConfigurationProperties(prefix = "file.storage.local")
+@Configuration
 @Data
 public class LocalFileClientConfig implements FileClientConfig {
 

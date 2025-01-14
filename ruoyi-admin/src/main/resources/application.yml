@@ -67,9 +67,9 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: localhost
+    host: ${REDIS_IP}
     # 端口，默认为6379
-    port: 6379
+    port: ${REDIS_PORT}
     # 数据库索引
     database: 0
     # 密码
@@ -134,7 +134,7 @@ file:
       basePath: ${LOCAL_FILE_BASE_PATH}
       domain: ${LOCAL_FILE_DOMAIN}
     s3:
-      use: true
+      use: false
       endpoint: ${S3_ENDPOINT}
       domain: ${S3_DOMAIN}
       bucket: ${S3_BUCKET}

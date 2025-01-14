@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * S3 文件客户端的配置类
@@ -18,6 +20,7 @@ import lombok.Data;
  * @author author
  */
 @ConfigurationProperties(prefix = "file.storage.s3")
+@Configuration
 @Data
 public class S3FileClientConfig implements FileClientConfig {
 

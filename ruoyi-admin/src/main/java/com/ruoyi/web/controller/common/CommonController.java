@@ -81,7 +81,7 @@ public class CommonController {
       ajax.put("originalFilename", file.getOriginalFilename());
       return ajax;
     } catch (Exception e) {
-      log.error(e.getMessage());
+      log.error(e.getMessage(), e);
       return AjaxResult.error(e.getMessage());
     }
   }

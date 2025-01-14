@@ -1,11 +1,11 @@
 # 基础镜像
-FROM  openjdk:8-jre
-# 挂载目录
-VOLUME /home/plt/back-end
+FROM openjdk:8-jdk
 # 创建目录
 RUN mkdir -p /home/plt/back-end
+RUN mkdir -p /home/plt/back-end/logs
 # 指定路径
 WORKDIR /home/plt/back-end
+
 # 复制jar文件到路径
 COPY ./jar/plt-admin.jar /home/plt/back-end/plt-admin.jar
 # 启动文件服务

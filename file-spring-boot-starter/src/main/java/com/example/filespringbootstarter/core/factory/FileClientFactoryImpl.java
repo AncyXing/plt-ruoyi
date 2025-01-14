@@ -44,11 +44,13 @@ public class FileClientFactoryImpl implements FileClientFactory {
     if (!clients.containsKey(fileStorageEnum)) {
       if (FileStorageEnum.LOCAL.equals(fileStorageEnum)) {
         Assert.notNull(localFileClientConfig, "请正确配置localFileClientConfig");
+        log.info("初始化本地上传文件配置信息: {}", localFileClientConfig);
         clients.put(FileStorageEnum.LOCAL,
             createFileClient(FileStorageEnum.LOCAL, localFileClientConfig));
       }
       if (FileStorageEnum.S3.equals(fileStorageEnum)) {
         Assert.notNull(s3FileClientConfig, "请正确配置s3FileClientConfig");
+        log.info("初始化s3上传文件配置信息: {}", s3FileClientConfig);
         clients.put(FileStorageEnum.S3, createFileClient(FileStorageEnum.S3, s3FileClientConfig));
       }
     }

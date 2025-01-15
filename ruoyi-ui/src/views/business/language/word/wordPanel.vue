@@ -75,7 +75,7 @@
             icon="el-icon-microphone"
             size="mini"
             type="text"
-            @click="playAudio(UK,sentence.sentenceContent)"
+            @click="playOneWordAudio(sentence.sentenceContent)"
           >
           </el-button>
         </div>

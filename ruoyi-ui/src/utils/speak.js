@@ -1,21 +1,53 @@
 import Speech from "speak-tts";
-
+import store from '@/store'
 export default {
   speechInit() {
     this.speech = new Speech();
     this.speech.init({
-      volume: 1,
-      // en-GB、zh-CN
-      lang: "en-GB",
-      rate: 1,
-      pitch: 1,
-      voice: 'Microsoft Hazel - English (United Kingdom)',
-      listeners: {
-        'onvoiceschanged': (voices) => {
-          console.log("Event voiceschanged", voices)
+      'rate': 1,
+      'pitch': 1,
+      'splitSentences': true,
+    }).then((data) => {
+      // 存储不同发音列表
+      var USVoices=[];
+      var GBVoices=[];
+      var voices = data.voices;
+      for(var i = 0 ; i < voices.length; i++) {
+        if(voices[i].lang === 'en-US' && voices[i].localService) {
+          USVoices.push(voices[i]);
+        }
+        if(voices[i].lang === 'en-GB' && voices[i].localService) {
+          GBVoices.push(voices[i]);
         }
       }
-    }).then(() => {
+      store.dispatch('language/changeVoiceNameSetting', {
+        key: 'USVoices',
+        value: USVoices
+      })
+      store.dispatch('language/changeVoiceNameSetting', {
+        key: 'GBVoices',
+        value: GBVoices
+      })
+      const storageSetting = JSON.parse(localStorage.getItem('language-setting')) || ''
+      if(storageSetting){
+        this.speech.setLanguage('en-GB')
+        this.speech.setVoice(store.state.language.GBName)
+        return
+      }
+      // 设定默认值，为英音
+      let defaultVoice = GBVoices.pop();
+      let defaultUsVoice = USVoices.pop();
+      console.log(defaultUsVoice, '=======', defaultVoice)
+      store.dispatch('language/changeVoiceNameSetting', {
+        key: 'GBName',
+        value: defaultVoice.name
+      })
+      store.dispatch('language/changeVoiceNameSetting', {
+        key: 'USName',
+        value: defaultUsVoice.name
+      })
+      this.speech.setLanguage(defaultVoice.lang)
+      this.speech.setVoice(defaultVoice.name)
     })
   },
   //语音播报
@@ -25,11 +57,14 @@ export default {
   },
   changeVoice(language) {
     if (language === 'en-US') {
-      this.speech.setVoice('Microsoft Zira - English (United States)')
+      this.speech.setVoice(store.state.language.USName)
     } else if (language === 'en-GB') {
-      this.speech.setVoice('Microsoft Hazel - English (United Kingdom)')
+      this.speech.setVoice(store.state.language.GBName)
     }
     this.speech.setLanguage(language)
+  },
+  updateVoice() {
+      this.speech.setVoice(store.state.language.GBName)
   },
   pauseSpeak() {
     this.speech.pause()

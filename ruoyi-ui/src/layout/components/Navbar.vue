@@ -37,6 +37,9 @@
           <el-dropdown-item @click.native="setting = true">
             <span>布局设置</span>
           </el-dropdown-item>
+          <el-dropdown-item @click.native="languageSetting = true">
+            <span>语言设置</span>
+          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
@@ -89,7 +92,18 @@ export default {
       get() {
         return this.$store.state.settings.topNav
       }
-    }
+    },
+    languageSetting: {
+      get() {
+        return this.$store.state.language.showSettings
+      },
+      set(val) {
+        this.$store.dispatch('language/changeVoiceNameSetting', {
+          key: 'showSettings',
+          value: val
+        })
+      }
+    },
   },
   methods: {
     toggleSideBar() {

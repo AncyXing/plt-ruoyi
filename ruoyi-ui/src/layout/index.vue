@@ -10,6 +10,7 @@
       <app-main/>
       <right-panel>
         <settings/>
+        <language-settings/>
       </right-panel>
     </div>
   </div>
@@ -17,7 +18,7 @@
 
 <script>
 import RightPanel from '@/components/RightPanel'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Settings, Sidebar, TagsView, LanguageSettings } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 import variables from '@/assets/styles/variables.module.scss'
@@ -30,7 +31,8 @@ export default {
     RightPanel,
     Settings,
     Sidebar,
-    TagsView
+    TagsView,
+    LanguageSettings
   },
   mixins: [ResizeMixin],
   computed: {

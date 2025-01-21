@@ -45,10 +45,9 @@ public class DataProcessorText {
     @Autowired
     private LexiconWordService lexiconWordService;
 
-
     @Test
     void testDataInsert() throws Exception {
-        String fileName = "CET4_2.json";
+        String fileName = "Level4_1.json";
         // 读取文件
         List<ComposeData> composeData = readFileAndParse(fileName);
         // 写入数据库

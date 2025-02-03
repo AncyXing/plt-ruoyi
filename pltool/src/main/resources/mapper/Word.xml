@@ -77,4 +77,16 @@
           and usr.uuid is null
     </select>
 
+    <insert id="batchInsertWord">
+        INSERT INTO word (uuid, word, translation, create_user_id)
+        VALUES
+        <foreach collection="list" item="word" separator=",">
+            (   #{word.uuid},
+                #{word.word},
+                #{word.translation},
+                #{word.create_user_id},
+             )
+        </foreach>
+    </insert>
+
 </mapper>

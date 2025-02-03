@@ -3,7 +3,10 @@ package com.example.pltool.service.impl.language;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import io.swagger.models.auth.In;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,7 @@ import cn.hutool.json.JSONUtil;
  * @author author
  * @since 2024-04-12
  */
+@Slf4j
 @Service("wordService")
 public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements WordService {
 
@@ -248,5 +252,66 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public List<Word> batchInsertInChunks(List<Word> wordList, int chunkSize, Long userId) {
+        log.info("共{}条数据", wordList.size());
+        List<List<Word>> chunks = partitionList(wordList, chunkSize);
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        StringBuilder msg = new StringBuilder();
+        List<Word> resultList = new ArrayList<>();
+        for (List<Word> chunk : chunks) {
+            QueryWrapper<Word> wordQueryWrapper = new QueryWrapper<>();
+            List<String> checktWordList = new ArrayList<>();
+            chunk.forEach(e -> {
+                checktWordList.add(e.getWord());
+            });
+            // 对这批进行查询过滤去重，再批量保存
+            wordQueryWrapper.in("word", checktWordList);
+            wordQueryWrapper.eq("create_user_id", userId);
+            // 验证是否存在这个单词
+            List<Word> wordListFromDb = wordMapper.selectList(wordQueryWrapper);
+            List<String> wordContent = wordListFromDb.stream().map(Word::getWord).collect(Collectors.toList());
+            List<Word> filteredData = chunk.stream()
+                    .filter(e -> !wordContent.contains(e.getWord()))
+                    .collect(Collectors.toList());
+            failureNum += chunk.size() - filteredData.size();
+            if (!CollectionUtils.isEmpty(filteredData)) {
+                successNum += filteredData.size();
+                resultList.addAll(filteredData);
+                wordMapper.batchInsertWord(filteredData);
+            }
+        }
+        if (failureNum > 0) {
+            failureMsg.append("<br/>").append(failureNum).append("条数据 导入失败");
+        }
+        if (successNum > 0) {
+            successMsg.append("<br/>").append(successNum).append("条数据 导入成功");
+        }
+        msg.append(successMsg).append(failureMsg);
+        log.info(msg.toString());
+        return resultList;
+    }
+
+    // 将列表按指定大小分块
+    static <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
+        System.out.println((list.size() + chunkSize - 1) / chunkSize);
+        return IntStream.range(0, (list.size() + chunkSize - 1) / chunkSize)
+                .mapToObj(i -> list.subList(i * chunkSize, Math.min((i + 1) * chunkSize, list.size())))
+                .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        int size = 500;
+        int chunkSize = 50;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            list.add(i);
+        }
+        System.out.println(partitionList(list, chunkSize));
     }
 }

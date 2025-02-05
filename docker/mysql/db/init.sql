@@ -1,5 +1,3 @@
-SET NAMES utf8mb4;
-
 CREATE TABLE `sys_dept`
 (
     `dept_id`     bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
@@ -249,6 +247,9 @@ insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component,
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) values (1087, '表达管理', 0, 5, 'business/expression', null, null, 1, 0, 'M', '0', '0', null, 'message', 'admin', '2024-07-04 20:26:54', '', null, '');
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) values (1088, '常用表达', 1087, 1, '/expression', 'business/expression/index', null, 1, 0, 'C', '0', '0', null, 'color', 'admin', '2024-07-04 20:28:14', '', null, '');
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) values (1089, '单词集', 1074, 2, 'wordcollection', 'business/language/wordcollection/index', null, 1, 0, 'C', '0', '0', '', 'documentation', 'admin', '2024-07-13 15:33:46', 'admin', '2024-07-13 17:21:56', '');
+INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES (1090, '标签管理', 0, 1, 'business/label', null, null, 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2025-01-15 12:40:56', 'admin', '2025-01-15 20:34:33', '');
+INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES (1091, '标签管理', 1090, 1, 'label', 'business/label/index', null, 1, 0, 'C', '0', '0', '', 'color', 'admin', '2025-01-15 12:42:24', 'admin', '2025-01-15 20:34:11', '');
+INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES (1092, '听说练习', 1087, 2, 'AudioRecorder', 'business/expression/audiorecorder/AudioRecorder', null, 1, 0, 'C', '0', '0', '', 'example', 'admin', '2025-01-15 20:38:19', 'admin', '2025-01-15 20:38:47', '');
 
 -- ----------------------------
 -- 初始化-角色和菜单关联表数据
@@ -418,3 +419,264 @@ insert into sys_dict_data values(26, 8,  '生成代码', '8',       'sys_oper_ty
 insert into sys_dict_data values(27, 9,  '清空数据', '9',       'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '清空操作');
 insert into sys_dict_data values(28, 1,  '成功',     '0',       'sys_common_status',   '',   'primary', 'N', '0', 'admin', sysdate(), '', null, '正常状态');
 insert into sys_dict_data values(29, 2,  '失败',     '1',       'sys_common_status',   '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '停用状态');
+
+create table if not exists dialogue
+(
+    id             bigint auto_increment
+        primary key,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    create_user_id bigint                             null,
+    reply          varchar(255)                       null,
+    sender_content varchar(255)                       null,
+    sort_num       int                                null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    uuid           varchar(255)                       null
+);
+
+create table if not exists dialogue_scene
+(
+    id          bigint auto_increment
+        primary key,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    introduce   varchar(255)                       null,
+    name        varchar(255)                       null,
+    study_info  varchar(255)                       null,
+    summary     varchar(255)                       null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists dialogue_scene_ref
+(
+    id            bigint auto_increment
+        primary key,
+    create_time   datetime default CURRENT_TIMESTAMP null,
+    dialogue_uuid varchar(255)                       null,
+    scene_uuid    varchar(255)                       null,
+    update_time   datetime default CURRENT_TIMESTAMP null,
+    uuid          varchar(255)                       null
+);
+
+create table if not exists expression
+(
+    id          bigint auto_increment
+        primary key,
+    content     varchar(255)                       null,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists expression_detail
+(
+    id             bigint auto_increment
+        primary key,
+    content_detail varchar(255)                       null,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    user_id        bigint                             null,
+    uuid           varchar(255)                       null
+);
+
+create table if not exists expression_detail_ref
+(
+    id                     bigint auto_increment
+        primary key,
+    create_time            datetime default CURRENT_TIMESTAMP null,
+    expression_detail_uuid varchar(255)                       null,
+    expression_uuid        varchar(255)                       null,
+    update_time            datetime default CURRENT_TIMESTAMP null,
+    uuid                   varchar(255)                       null
+);
+
+create table if not exists flashcard
+(
+    id          bigint auto_increment
+        primary key,
+    back        varchar(255)                       null,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    front       varchar(255)                       null,
+    source_uuid varchar(255)                       null,
+    type        int                                null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists flashcard_attribute
+(
+    id              bigint auto_increment
+        primary key,
+    card_uuid       varchar(255)                       null,
+    create_time     datetime default CURRENT_TIMESTAMP null,
+    familiarity     int                                null,
+    next_study_time datetime                           null,
+    update_time     datetime default CURRENT_TIMESTAMP null,
+    uuid            varchar(255)                       null
+);
+
+create table if not exists flashcard_package
+(
+    id          bigint auto_increment
+        primary key,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    name        varchar(255)                       null,
+    type        int                                null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists label
+(
+    id             bigint auto_increment
+        primary key,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    create_user_id bigint                             null,
+    name           varchar(255)                       null,
+    parent_uuid    varchar(255)                       null,
+    target         int                                null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    uuid           varchar(255)                       null
+);
+
+create table if not exists label_ref
+(
+    id             bigint auto_increment
+        primary key,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    create_user_id bigint                             null,
+    label_uuid     varchar(255)                       null,
+    ref_type       int                                null,
+    ref_uuid       varchar(255)                       null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    uuid           varchar(255)                       null
+);
+
+create table if not exists lexicon
+(
+    id             bigint auto_increment
+        primary key,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    create_user_id bigint                             null,
+    language       varchar(255)                       null,
+    name           varchar(255)                       null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    uuid           varchar(255)                       null
+);
+
+create table if not exists lexicon_word
+(
+    id           bigint auto_increment
+        primary key,
+    create_time  datetime default CURRENT_TIMESTAMP null,
+    lexicon_uuid varchar(255)                       null,
+    update_time  datetime default CURRENT_TIMESTAMP null,
+    uuid         varchar(255)                       null,
+    word_uuid    varchar(255)                       null
+)
+    auto_increment = 565;
+
+create table if not exists note
+(
+    id          bigint auto_increment
+        primary key,
+    content     varchar(255)                       null,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    ref_uuid    varchar(255)                       null,
+    summary     varchar(255)                       null,
+    title       varchar(255)                       null,
+    type        int                                null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists package_card_ref
+(
+    id              bigint auto_increment
+        primary key,
+    card_uuid       varchar(255)                       null,
+    collection_uuid varchar(255)                       null,
+    create_time     datetime default CURRENT_TIMESTAMP null,
+    create_user_id  bigint                             null,
+    package_uuid    varchar(255)                       null,
+    update_time     datetime default CURRENT_TIMESTAMP null,
+    uuid            varchar(255)                       null
+);
+
+create table if not exists question
+(
+    id          bigint auto_increment
+        primary key,
+    answer      varchar(255)                       null,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    note_id     bigint                             null,
+    question    varchar(255)                       null,
+    tag         varchar(255)                       null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    uuid        varchar(255)                       null
+);
+
+create table if not exists user_study_record
+(
+    id          bigint auto_increment
+        primary key,
+    create_time datetime default CURRENT_TIMESTAMP null,
+    study_time  datetime                           null,
+    update_time datetime default CURRENT_TIMESTAMP null,
+    user_id     bigint                             null,
+    user_name   varchar(255)                       null,
+    uuid        varchar(255)                       null,
+    word        varchar(255)                       null,
+    word_uuid   varchar(255)                       null
+);
+
+create table if not exists user_word
+(
+    id              bigint auto_increment
+        primary key,
+    collect_flag    int                                null,
+    create_time     datetime default CURRENT_TIMESTAMP null,
+    next_study_time datetime                           null,
+    period int null,
+    update_time     datetime default CURRENT_TIMESTAMP null,
+    user_id         bigint                             null,
+    user_name       varchar(255)                       null,
+    uuid            varchar(255)                       null,
+    word            varchar(255)                       null,
+    word_uuid       varchar(255)                       null
+);
+
+create table if not exists word
+(
+    id             bigint auto_increment
+        primary key,
+    create_time    datetime default CURRENT_TIMESTAMP null,
+    create_user_id bigint                             null,
+    phonetic       varchar(255)                       null,
+    pos            varchar(255)                       null,
+    sentence       varchar(255)                       null,
+    tag            varchar(255)                       null,
+    translation    varchar(255)                       null,
+    update_time    datetime default CURRENT_TIMESTAMP null,
+    uuid           varchar(255)                       null,
+    word           varchar(255)                       null
+)
+    auto_increment = 565;
+
+create table if not exists word_sentence
+(
+    id                bigint auto_increment
+        primary key,
+    create_time       datetime default CURRENT_TIMESTAMP null,
+    sentence_content  varchar(255)                       null,
+    translate_content varchar(255)                       null,
+    update_time       datetime default CURRENT_TIMESTAMP null,
+    uuid              varchar(255)                       null,
+    word_uuid         varchar(255)                       null
+)
+    auto_increment = 930;

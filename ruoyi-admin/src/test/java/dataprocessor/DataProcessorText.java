@@ -19,11 +19,13 @@ import domain.TransData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author yangxing
@@ -45,10 +47,10 @@ public class DataProcessorText {
     @Autowired
     private LexiconWordService lexiconWordService;
 
-
     @Test
+    @Transactional
     void testDataInsert() throws Exception {
-        String fileName = "CET4_2.json";
+        String fileName = "Level4_1.json";
         // 读取文件
         List<ComposeData> composeData = readFileAndParse(fileName);
         // 写入数据库
@@ -72,10 +74,19 @@ public class DataProcessorText {
             }
             lexiconWordList.add(e.getLexiconWord());
         });
-        wordService.saveBatch(wordList);
-        wordSentenceService.saveBatch(wordSentences);
+        List<String> wordUUIds = wordService.batchInsertInChunks(wordList, 1000, 1L)
+                .stream()
+                .map(Word::getUuid)
+                .collect(Collectors.toList());
+        List<WordSentence> filteredWordSentences = wordSentences.stream()
+                .filter(e -> wordUUIds.contains(e.getWordUuid()))
+                .collect(Collectors.toList());
+        wordSentenceService.saveBatch(filteredWordSentences);
         lexiconService.saveBatch(lexiconList);
-        lexiconWordService.saveBatch(lexiconWordList);
+        List<LexiconWord> filteredLexiconWords = lexiconWordList.stream()
+                .filter(e -> wordUUIds.contains(e.getWordUuid()))
+                .collect(Collectors.toList());
+        lexiconWordService.saveBatch(filteredLexiconWords);
     }
 
 

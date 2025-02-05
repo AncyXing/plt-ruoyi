@@ -50,4 +50,6 @@ public interface WordService extends IService<Word> {
    * @return 导入结果信息
    */
   String importWords(List<Word> wordList, Boolean isUpdateSupport, Long userId);
+
+  List<Word> batchInsertInChunks(List<Word> wordList, int chunkSize, Long userId);
 }

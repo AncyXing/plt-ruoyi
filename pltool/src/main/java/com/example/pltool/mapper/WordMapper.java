@@ -78,4 +78,6 @@ public interface WordMapper extends BaseMapper<Word> {
    */
   Long getCollectionNewWordCountOfUser(@Param("collectionUUId") String collectionUUId,
       @Param("userId") Long userId);
+
+  boolean batchInsertWord(@Param("list") List<Word> list);
 }

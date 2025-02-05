@@ -84,7 +84,7 @@
             (   #{word.uuid},
                 #{word.word},
                 #{word.translation},
-                #{word.create_user_id},
+                #{word.createUserId}
              )
         </foreach>
     </insert>

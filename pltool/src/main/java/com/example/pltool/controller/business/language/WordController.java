@@ -142,7 +142,7 @@ public class WordController extends BaseController {
      */
     @GetMapping("/searchWordByCN")
     public AjaxResult searchWordByCN(@RequestParam("searchCn") String searchCn) {
-        return success(newWordService.searchWordByCN(searchCn));
+        return success(newWordService.searchWord(searchCn));
     }
 
     @GetMapping("/searchWord")

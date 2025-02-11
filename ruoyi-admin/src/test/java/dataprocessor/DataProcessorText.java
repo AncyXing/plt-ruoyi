@@ -19,6 +19,7 @@ import domain.TransData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -49,8 +50,9 @@ public class DataProcessorText {
 
     @Test
     @Transactional
+    @Rollback(value = false)
     void testDataInsert() throws Exception {
-        String fileName = "Level4_1.json";
+        String fileName = "CET4_3.json";
         // 读取文件
         List<ComposeData> composeData = readFileAndParse(fileName);
         // 写入数据库

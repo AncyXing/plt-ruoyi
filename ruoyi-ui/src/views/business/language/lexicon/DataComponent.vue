@@ -125,8 +125,6 @@ export default {
           console.log(this.form)
           if (this.form.id != null) {
             let data = this.form;
-            data.labelList = [...this.dynamicTags]
-            data.deleteTags = [...this.deleteTags]
             updateLexicon(data).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.$emit('closeDig')
@@ -138,10 +136,7 @@ export default {
               labelNames[i] = this.dynamicTags[i].name
             }
             const formData = new FormData();
-            formData.append("name", this.form.name)
-            formData.append("language", this.form.language)
             formData.append("file", this.fileList[0])
-            formData.append("label", labelNames)
             addLexicon(formData).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.$emit('closeDig')
@@ -180,51 +175,6 @@ export default {
 <template>
   <div>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入名称"/>
-      </el-form-item>
-      <el-form-item label="语言" prop="language">
-        <el-input v-model="form.language" placeholder="请输入语言"/>
-      </el-form-item>
-      <el-form-item label="标签" prop="label">
-        <el-row>
-          <el-col :span="4" v-for="(tag, index) in dynamicTags" :key="index" :offset="1">
-            <el-input
-              class="input-new-tag"
-              v-if="editTags[index]"
-              v-model="tag.name"
-              :ref="'editInput'+index"
-              @keyup.enter.native="handleEditableInputConfirm(tag, index)"
-              @change="handleEditableInputConfirm(tag, index)"
-              @blur="handleEditableInputBlur(tag, index)"
-            >
-            </el-input>
-            <el-tag
-              class="input-new-tag"
-              :key="tag.name"
-              v-else
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag, index)"
-              @click="showEditTagInput(index)"
-            >
-              {{ tag.name }}
-            </el-tag>
-          </el-col>
-          <el-col :span="4" :offset="1">
-            <el-input
-              class="input-new-tag"
-              v-if="inputVisible"
-              v-model="inputValue"
-              ref="saveTagInput"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            >
-            </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+标签</el-button>
-          </el-col>
-        </el-row>
-      </el-form-item>
       <el-form-item label="词库文件" v-show="isInsert">
         <el-upload
           class="upload-demo"
@@ -236,7 +186,7 @@ export default {
           :file-list="fileList"
           :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传json文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
       <el-row :gutter="20" type="flex" justify="end">

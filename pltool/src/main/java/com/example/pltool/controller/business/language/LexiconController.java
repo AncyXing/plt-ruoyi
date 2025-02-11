@@ -75,15 +75,11 @@ public class LexiconController extends BaseController {
   @PreAuthorize("@ss.hasPermi('system:lexicon:add')")
   @Log(title = "词库", businessType = BusinessType.INSERT)
   @PostMapping
-  public AjaxResult add(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
-      @RequestParam("language") String language, @RequestParam("label") List<String> labelList) {
+  public AjaxResult add(@RequestParam("file") MultipartFile file) {
     Long userId = getUserId();
     LexiconData lexicon = new LexiconData();
     lexicon.setFile(file);
-    lexicon.setName(name);
-    lexicon.setLanguage(language);
     lexicon.setUserId(userId);
-    lexicon.setLabelList(labelList);
     return AjaxResult.success(lexiconService.createLexicon(lexicon));
   }
 
